@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Admin · CS Day 2026</title>
+  <meta name="description" content="Painel de leads.">
+  <meta name="theme-color" content="#121212">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+<style>
+  :root {
+    --ink: #121212;
+    --ink-2: #1a1a1c;
+    --ink-3: #202024;
+    --blue: #1a0ce0;
+    --cyan: #55eef2;
+    --text: #f4f5f7;
+    --muted: #a9adb6;
+    --line: #2c2d31;
+    --danger: #f2715c;
+
+    --font-display: "Archivo Black", "Arial Black", "Helvetica Neue", Impact, sans-serif;
+    --font-body: "Baloo 2", "Quicksand", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- tela de login --- */
+  .gate {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+  }
+  .gate-card {
+    width: 100%;
+    max-width: 380px;
+    text-align: left;
+  }
+  .gate-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #0d049e;
+    background: var(--cyan);
+    padding: 7px 14px;
+    border-radius: 8px;
+    margin-bottom: 22px;
+  }
+  .gate-card h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: clamp(26px, 5vw, 34px);
+    line-height: 1.05;
+    margin: 0 0 10px;
+  }
+  .gate-card p.sub {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0 0 32px;
+  }
+
+  .gate-form { display: flex; flex-direction: column; gap: 8px; }
+
+  .gate-input-wrap {
+    position: relative;
+    display: flex;
+  }
+
+  .gate-input {
+    width: 100%;
+    background: var(--ink-2);
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 16px;
+    padding: 14px 52px 14px 16px;
+    outline: none;
+    transition: border-color 160ms ease-out;
+  }
+  .gate-input:focus { border-color: var(--cyan); }
+  .gate-input.error { border-color: var(--danger); }
+
+  .gate-toggle {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 160ms ease-out;
+  }
+  .gate-toggle:hover { color: var(--cyan); }
+  .gate-toggle:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .gate-eye { width: 26px; height: 26px; }
+
+  .gate-error {
+    min-height: 18px;
+    font-size: 13px;
+    color: var(--danger);
+    font-family: var(--font-mono);
+  }
+
+  .gate-submit {
+    margin-top: 10px;
+    min-height: 50px;
+    border-radius: 10px;
+    border: none;
+    background: var(--cyan);
+    color: #06232b;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background-color 160ms ease-out, opacity 160ms ease-out, transform 110ms ease-out;
+  }
+  .gate-submit:hover { background: #7bf3f6; }
+  .gate-submit:active { transform: scale(0.985); }
+  .gate-submit:disabled { opacity: 0.55; cursor: default; transform: none; }
+  .gate-submit:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+
+  /* --- painel --- */
+  .panel { display: none; min-height: 100dvh; }
+  .panel.visible { display: block; }
+  .gate.hidden { display: none; }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 28px;
+    background: rgba(18,18,18,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .topbar-title h2 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 16px;
+    margin: 0;
+  }
+  .count-pill {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    color: var(--cyan);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 160ms ease-out, color 160ms ease-out;
+  }
+  .icon-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .icon-btn svg { width: 14px; height: 14px; }
+  .icon-btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+  .content { padding: 28px; }
+
+  /* --- mini dashboard --- */
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 900px) {
+    .dashboard { grid-template-columns: 1fr; }
+  }
+  .dash-card {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px 20px;
+  }
+  .dash-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+  .dash-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .dash-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+  }
+  .dash-rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: rgba(85,238,242,0.12);
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    flex: none;
+  }
+  .dash-list .label {
+    flex: 1;
+    color: var(--text);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .dash-list .count {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    flex: none;
+  }
+  .dash-empty { color: var(--muted); font-size: 13px; }
+
+  .dash-donut-wrap { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .donut {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    flex: none;
+    position: relative;
+    background: var(--line);
+  }
+  .donut::after {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border-radius: 50%;
+    background: var(--ink-2);
+    z-index: 0;
+  }
+  .donut-total {
+    position: absolute;
+    inset: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 19px;
+    z-index: 1;
+  }
+  .dash-legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 110px;
+  }
+  .dash-legend li { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text); }
+  .dash-legend .dot { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .dash-legend .lg-count { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+  .tag-test {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: rgba(242,113,92,0.16);
+    color: var(--danger);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  .state-msg {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 40px 4px;
+  }
+  .state-msg.visible { display: flex; }
+  .state-msg.error { color: var(--danger); }
+
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    border-top-color: var(--cyan);
+    animation: spin 700ms linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .table-wrap {
+    display: none;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--ink-2);
+  }
+  .table-wrap.visible { display: block; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 1180px;
+    font-size: 13.5px;
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    background: var(--ink-3);
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    white-space: nowrap;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: rgba(85,238,242,0.05); }
+
+  td.mono, th.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  td.name { font-weight: 700; }
+  td.email { color: var(--cyan); }
+
+  .empty {
+    display: none;
+    text-align: center;
+    padding: 64px 20px;
+    color: var(--muted);
+  }
+  .empty.visible { display: block; }
+  .empty h3 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 18px;
+    color: var(--text);
+    margin: 0 0 8px;
+  }
+
+  @media (max-width: 640px) {
+    .topbar { padding: 16px 18px; }
+    .content { padding: 18px; }
+  }
+
+  /* --- navegacao de secoes --- */
+  .section-nav {
+    display: flex;
+    gap: 8px;
+    padding: 0 28px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(18,18,18,0.92);
+    position: sticky;
+    top: 69px;
+    z-index: 4;
+    overflow-x: auto;
+  }
+  .section-tab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 4px;
+    margin-right: 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 160ms ease-out, border-color 160ms ease-out;
+  }
+  .section-tab:hover { color: var(--text); }
+  .section-tab[aria-selected="true"] { color: var(--cyan); border-bottom-color: var(--cyan); }
+  .section-tab:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+  .view[hidden] { display: none; }
+
+  /* --- funil --- */
+  .funnel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 900px) { .funnel { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .funnel { grid-template-columns: 1fr; } }
+
+  .funnel-card {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px 20px;
+  }
+  .funnel-card.accent { border-color: rgba(85,238,242,0.45); }
+  .funnel-value {
+    font-family: var(--font-display);
+    font-size: 34px;
+    line-height: 1.1;
+    margin: 2px 0 6px;
+  }
+  .funnel-card.accent .funnel-value { color: var(--cyan); }
+  .funnel-hint {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin: 0;
+  }
+  .funnel-bar {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--line);
+    margin-top: 12px;
+    overflow: hidden;
+  }
+  .funnel-bar span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--cyan);
+    width: 0;
+    transition: width 520ms cubic-bezier(.16,.84,.44,1);
+  }
+
+  .skill-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .skill-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: border-color 160ms ease-out, color 160ms ease-out;
+  }
+  .skill-link:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  #skill-table-wrap table { min-width: 900px; }
+
+  .setup-note {
+    display: none;
+    border: 1px dashed var(--line);
+    border-radius: 14px;
+    padding: 28px 24px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .setup-note.visible { display: block; }
+  .setup-note h3 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 16px;
+    color: var(--text);
+    margin: 0 0 10px;
+  }
+  .setup-note code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    background: var(--ink-3);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 2px 6px;
+    color: var(--cyan);
+  }
+  .setup-note ol { margin: 12px 0 0; padding-left: 20px; }
+  .setup-note li { margin: 8px 0; }
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <span class="gate-eyebrow">Área restrita</span>
+    <h1>Painel de leads</h1>
+    <p class="sub">CS Day 2026 — digite a senha de acesso para ver os dados capturados no formulário.</p>
+
+    <form class="gate-form" id="gate-form" novalidate>
+      <div class="gate-input-wrap">
+        <input class="gate-input" id="gate-password" type="password" name="password"
+               placeholder="Senha" autocomplete="current-password" autofocus>
+        <button class="gate-toggle" id="gate-toggle" type="button" aria-label="Mostrar senha" aria-pressed="false">
+          <svg class="gate-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+            <line class="eye-slash" x1="2" y1="2" x2="22" y2="22" hidden></line>
+          </svg>
+        </button>
+      </div>
+      <p class="gate-error" id="gate-error"></p>
+      <button class="gate-submit" id="gate-submit" type="submit">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<div class="panel" id="panel">
+  <div class="topbar">
+    <div class="topbar-title">
+      <h2 id="topbar-heading">Leads · CS Day 2026</h2>
+      <span class="count-pill" id="count-pill">0</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="refresh-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        Atualizar
+      </button>
+      <button class="icon-btn" id="export-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Exportar CSV
+      </button>
+      <button class="icon-btn" id="logout-btn" type="button">Sair</button>
+    </div>
+  </div>
+
+  <nav class="section-nav" role="tablist" aria-label="Seções do painel">
+    <button class="section-tab" id="tab-leads" role="tab" aria-selected="true" aria-controls="view-leads" data-view="leads" type="button">Leads · CS Day 2026</button>
+    <button class="section-tab" id="tab-skill" role="tab" aria-selected="false" aria-controls="view-skill" data-view="skill" type="button">Landing Page Skill</button>
+  </nav>
+
+  <div class="content">
+   <section class="view" id="view-leads" role="tabpanel" aria-labelledby="tab-leads">
+    <div class="dashboard" id="dashboard">
+      <div class="dash-card">
+        <h3 class="dash-title">Principais localidades</h3>
+        <ol class="dash-list" id="dash-locations"></ol>
+      </div>
+      <div class="dash-card">
+        <h3 class="dash-title">Dispositivos</h3>
+        <div class="dash-donut-wrap">
+          <div class="donut" id="device-donut"><span class="donut-total" id="donut-total">0</span></div>
+          <ul class="dash-legend" id="device-legend"></ul>
+        </div>
+      </div>
+      <div class="dash-card">
+        <h3 class="dash-title">Principais empresas</h3>
+        <ol class="dash-list" id="dash-companies"></ol>
+      </div>
+    </div>
+
+    <div class="state-msg" id="loading-msg">
+      <span class="spinner"></span> Carregando leads...
+    </div>
+    <div class="state-msg error" id="error-msg"></div>
+
+    <div class="empty" id="empty-msg">
+      <h3>Nenhum lead ainda</h3>
+      <p>Assim que alguém completar o formulário no site, os dados aparecem aqui.</p>
+    </div>
+
+    <div class="table-wrap" id="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="mono">Data</th>
+            <th class="mono">Hora</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Empresa</th>
+            <th class="mono">IP</th>
+            <th>Local (por IP)</th>
+            <th>Idioma</th>
+            <th>Fuso horário</th>
+            <th>Resolução</th>
+            <th>Referrer</th>
+            <th>UTM</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+   </section>
+
+   <section class="view" id="view-skill" role="tabpanel" aria-labelledby="tab-skill" hidden>
+    <div class="funnel" id="skill-funnel">
+      <div class="funnel-card">
+        <p class="funnel-hint">Visitas na página</p>
+        <p class="funnel-value" id="fn-visits">—</p>
+        <p class="funnel-hint">Sessões únicas</p>
+        <div class="funnel-bar"><span id="bar-visits"></span></div>
+      </div>
+      <div class="funnel-card">
+        <p class="funnel-hint">Abriram o popup</p>
+        <p class="funnel-value" id="fn-popup">—</p>
+        <p class="funnel-hint" id="fn-popup-rate">—</p>
+        <div class="funnel-bar"><span id="bar-popup"></span></div>
+      </div>
+      <div class="funnel-card">
+        <p class="funnel-hint">Leads capturados</p>
+        <p class="funnel-value" id="fn-leads">—</p>
+        <p class="funnel-hint" id="fn-leads-rate">—</p>
+        <div class="funnel-bar"><span id="bar-leads"></span></div>
+      </div>
+      <div class="funnel-card accent">
+        <p class="funnel-hint">Downloads do .zip</p>
+        <p class="funnel-value" id="fn-downloads">—</p>
+        <p class="funnel-hint" id="fn-conv">Conversão total —</p>
+        <div class="funnel-bar"><span id="bar-downloads"></span></div>
+      </div>
+    </div>
+
+    <div class="skill-links">
+      <a class="skill-link" href="/habilidade/" target="_blank" rel="noopener">Abrir a landing ↗</a>
+      <a class="skill-link" href="/habilidade/download.html" target="_blank" rel="noopener">Página de download ↗</a>
+      <a class="skill-link" href="/download/pitch-prospeccao.zip">Baixar o .zip ↗</a>
+    </div>
+
+    <div class="state-msg" id="skill-loading">
+      <span class="spinner"></span> Carregando dados da landing...
+    </div>
+    <div class="state-msg error" id="skill-error"></div>
+
+    <div class="setup-note" id="skill-setup">
+      <h3>Captura ainda não conectada</h3>
+      <p>A landing da skill já coleta nome, e-mail e WhatsApp, mas os dados ainda ficam só no navegador de quem preenche. Para alimentar esta seção falta ligar o backend:</p>
+      <ol>
+        <li>Criar a tabela <code>skill_leads</code> e a tabela de eventos <code>skill_events</code> no Supabase.</li>
+        <li>Publicar a function <code>admin-skill-leads</code>, no mesmo padrão de <code>admin-leads</code>.</li>
+        <li>Fazer a landing enviar o lead e os eventos de funil (visita, popup, download).</li>
+      </ol>
+    </div>
+
+    <div class="empty" id="skill-empty">
+      <h3>Nenhum download ainda</h3>
+      <p>Assim que alguém baixar a habilidade, os dados aparecem aqui.</p>
+    </div>
+
+    <div class="table-wrap" id="skill-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="mono">Data</th>
+            <th class="mono">Hora</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th class="mono">WhatsApp</th>
+            <th>Dispositivo</th>
+            <th>Local (por IP)</th>
+            <th>Referrer</th>
+            <th>UTM</th>
+          </tr>
+        </thead>
+        <tbody id="skill-table-body"></tbody>
+      </table>
+    </div>
+   </section>
+  </div>
+</div>
+
+<script>
+  const FUNCTIONS_URL = 'https://nwmuaiilbxtjkwfxpkay.supabase.co/functions/v1/admin-leads';
+  const SKILL_FUNCTIONS_URL = 'https://nwmuaiilbxtjkwfxpkay.supabase.co/functions/v1/admin-skill-leads';
+  const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bXVhaWlsYnh0amt3Znhwa2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMTMxNDMsImV4cCI6MjEwMTY4OTE0M30.gXVAeCnF1TGVmHPO65Sd1UTV0Z8W25uoaAR1DNYSzaE';
+
+  const gate = document.getElementById('gate');
+  const panel = document.getElementById('panel');
+  const gateForm = document.getElementById('gate-form');
+  const gateInput = document.getElementById('gate-password');
+  const gateError = document.getElementById('gate-error');
+  const gateSubmit = document.getElementById('gate-submit');
+  const gateToggle = document.getElementById('gate-toggle');
+
+  gateToggle.addEventListener('click', () => {
+    const showing = gateInput.type === 'text';
+    gateInput.type = showing ? 'password' : 'text';
+    gateToggle.setAttribute('aria-pressed', String(!showing));
+    gateToggle.setAttribute('aria-label', showing ? 'Mostrar senha' : 'Ocultar senha');
+    gateToggle.querySelector('.eye-slash').hidden = showing;
+    gateInput.focus();
+  });
+
+  const loadingMsg = document.getElementById('loading-msg');
+  const errorMsg = document.getElementById('error-msg');
+  const emptyMsg = document.getElementById('empty-msg');
+  const tableWrap = document.getElementById('table-wrap');
+  const tableBody = document.getElementById('table-body');
+  const countPill = document.getElementById('count-pill');
+
+  let currentPasswordHash = '';
+  let currentLeads = [];
+
+  async function sha256Hex(text) {
+    const bytes = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest('SHA-256', bytes);
+    return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function escapeHtml(value) {
+    const div = document.createElement('div');
+    div.textContent = value ?? '';
+    return div.innerHTML;
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('pt-BR');
+  }
+  function formatTime(iso) {
+    const d = new Date(iso);
+    return d.toLocaleTimeString('pt-BR');
+  }
+
+  function isTestLead(lead) {
+    const name = (lead.name || '').toLowerCase();
+    const email = (lead.email || '').toLowerCase();
+    const company = (lead.company || '').toLowerCase();
+    return name.includes('josias') || email.includes('josias') || company.includes('btx');
+  }
+
+  function detectDevice(ua) {
+    if (!ua) return 'desconhecido';
+    const s = ua.toLowerCase();
+    if (/ipad|tablet|kindle|silk|playbook|(android(?!.*mobile))/.test(s)) return 'tablet';
+    if (/mobi|iphone|ipod|android|blackberry|windows phone/.test(s)) return 'mobile';
+    return 'desktop';
+  }
+
+  function topGroups(leads, keyFn, limit) {
+    const map = new Map();
+    leads.forEach(lead => {
+      const raw = (keyFn(lead) || '').trim();
+      if (!raw) return;
+      const key = raw.toLowerCase();
+      const entry = map.get(key) || { label: raw, count: 0 };
+      entry.count += 1;
+      map.set(key, entry);
+    });
+    return [...map.values()].sort((a, b) => b.count - a.count).slice(0, limit);
+  }
+
+  function renderRankedList(elId, groups, emptyText, unit) {
+    const el = document.getElementById(elId);
+    if (!groups.length) {
+      el.innerHTML = `<li class="dash-empty">${emptyText}</li>`;
+      return;
+    }
+    el.innerHTML = groups.map((g, i) => `
+      <li>
+        <span class="dash-rank">${i + 1}</span>
+        <span class="label" title="${escapeHtml(g.label)}">${escapeHtml(g.label)}</span>
+        <span class="count">${g.count} ${unit}</span>
+      </li>
+    `).join('');
+  }
+
+  function renderDeviceDonut(leads) {
+    const counts = { mobile: 0, desktop: 0, tablet: 0, desconhecido: 0 };
+    leads.forEach(lead => { counts[detectDevice(lead.user_agent)] += 1; });
+    const total = leads.length;
+
+    const donut = document.getElementById('device-donut');
+    const totalEl = document.getElementById('donut-total');
+    const legend = document.getElementById('device-legend');
+    totalEl.textContent = total;
+
+    const segments = [
+      { label: 'Celular', color: '#55eef2', count: counts.mobile },
+      { label: 'Desktop', color: '#1a0ce0', count: counts.desktop },
+      { label: 'Tablet', color: '#a9adb6', count: counts.tablet },
+      { label: 'Desconhecido', color: '#2c2d31', count: counts.desconhecido }
+    ].filter(s => s.count > 0);
+
+    if (total === 0) {
+      donut.style.background = 'var(--line)';
+      legend.innerHTML = '<li class="dash-empty">Sem dados suficientes ainda</li>';
+      return;
+    }
+
+    let acc = 0;
+    const stops = segments.map(s => {
+      const start = acc;
+      acc += (s.count / total) * 100;
+      return `${s.color} ${start}% ${acc}%`;
+    });
+    donut.style.background = `conic-gradient(${stops.join(', ')})`;
+
+    legend.innerHTML = segments.map(s => `
+      <li>
+        <span class="dot" style="background:${s.color}"></span>
+        <span>${s.label}</span>
+        <span class="lg-count">${s.count} · ${Math.round((s.count / total) * 100)}%</span>
+      </li>
+    `).join('');
+  }
+
+  function renderDashboard(leads) {
+    const realLeads = leads.filter(lead => !isTestLead(lead));
+
+    const locations = topGroups(realLeads, lead => [lead.geo_city, lead.geo_country].filter(Boolean).join(', '), 6);
+    renderRankedList('dash-locations', locations, 'Sem dados de localização ainda', 'inscritos');
+
+    const companies = topGroups(realLeads, lead => lead.company, 6);
+    renderRankedList('dash-companies', companies, 'Sem empresas registradas ainda', 'funcionários');
+
+    renderDeviceDonut(realLeads);
+  }
+
+  async function fetchLeads(passwordHash) {
+    loadingMsg.classList.add('visible');
+    errorMsg.classList.remove('visible');
+    tableWrap.classList.remove('visible');
+    emptyMsg.classList.remove('visible');
+
+    try {
+      const res = await fetch(FUNCTIONS_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': ANON_KEY,
+          'Authorization': `Bearer ${ANON_KEY}`
+        },
+        body: JSON.stringify({ password_hash: passwordHash })
+      });
+
+      if (res.status === 401) {
+        throw new Error('unauthorized');
+      }
+      if (!res.ok) {
+        throw new Error('request_failed');
+      }
+
+      const data = await res.json();
+      currentLeads = (data.leads || []).filter(lead => !lead.is_duplicate);
+      renderDashboard(currentLeads);
+      renderLeads(currentLeads);
+      return true;
+    } catch (err) {
+      loadingMsg.classList.remove('visible');
+      if (err.message === 'unauthorized') {
+        return false;
+      }
+      errorMsg.textContent = 'Não foi possível carregar os leads agora. Tente novamente em instantes.';
+      errorMsg.classList.add('visible');
+      return true;
+    }
+  }
+
+  function renderLeads(leads) {
+    loadingMsg.classList.remove('visible');
+    countPill.textContent = leads.length;
+
+    if (leads.length === 0) {
+      emptyMsg.classList.add('visible');
+      return;
+    }
+
+    tableBody.innerHTML = leads.map(lead => {
+      const utm = [lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ') || '—';
+      const local = [lead.geo_city, lead.geo_country].filter(Boolean).join(', ') || '—';
+      const testTag = isTestLead(lead) ? '<span class="tag-test">Teste</span>' : '';
+      return `
+        <tr>
+          <td class="mono">${escapeHtml(formatDate(lead.created_at))}</td>
+          <td class="mono">${escapeHtml(formatTime(lead.created_at))}</td>
+          <td class="name">${escapeHtml(lead.name)}${testTag}</td>
+          <td class="email">${escapeHtml(lead.email)}</td>
+          <td>${escapeHtml(lead.company)}</td>
+          <td class="mono">${escapeHtml(lead.ip_address || '—')}</td>
+          <td>${escapeHtml(local)}</td>
+          <td>${escapeHtml(lead.language || '—')}</td>
+          <td>${escapeHtml(lead.timezone || '—')}</td>
+          <td class="mono">${escapeHtml(lead.screen_resolution || '—')}</td>
+          <td>${escapeHtml(lead.referrer || 'direto')}</td>
+          <td>${escapeHtml(utm)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    tableWrap.classList.add('visible');
+  }
+
+  gateForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const passwordHash = await sha256Hex(gateInput.value);
+    gateError.textContent = '';
+    gateInput.classList.remove('error');
+    gateSubmit.disabled = true;
+    gateSubmit.textContent = 'Entrando...';
+
+    const ok = await fetchLeads(passwordHash);
+
+    gateSubmit.disabled = false;
+    gateSubmit.textContent = 'Entrar';
+
+    if (!ok) {
+      gateError.textContent = 'Senha incorreta.';
+      gateInput.classList.add('error');
+      gateInput.value = '';
+      gateInput.focus();
+      return;
+    }
+
+    currentPasswordHash = passwordHash;
+    gate.classList.add('hidden');
+    panel.classList.add('visible');
+  });
+
+  document.getElementById('refresh-btn').addEventListener('click', () => {
+    if (currentView === 'skill') {
+      fetchSkillData(currentPasswordHash);
+    } else {
+      fetchLeads(currentPasswordHash);
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    currentPasswordHash = '';
+    currentLeads = [];
+    skillLeads = [];
+    skillStats = null;
+    skillLoaded = false;
+    switchView('leads');
+    panel.classList.remove('visible');
+    gate.classList.remove('hidden');
+    gateInput.value = '';
+    gateInput.focus();
+  });
+
+  document.getElementById('export-btn').addEventListener('click', () => {
+    if (currentView === 'skill') { exportSkillCsv(); return; }
+    if (!currentLeads.length) return;
+
+    const headers = ['created_at', 'name', 'email', 'company', 'ip_address', 'geo_city', 'geo_country', 'language', 'timezone', 'screen_resolution', 'referrer', 'utm_source', 'utm_medium', 'utm_campaign'];
+    const rows = currentLeads.map(lead =>
+      headers.map(h => {
+        const value = String(lead[h] ?? '').replace(/"/g, '""');
+        return `"${value}"`;
+      }).join(',')
+    );
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `leads-cs-day-2026-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  /* ------------------------------------------------------------------ *
+   *  Seção: Landing Page Skill                                          *
+   * ------------------------------------------------------------------ */
+
+  let currentView = 'leads';
+  let skillLeads = [];
+  let skillStats = null;
+  let skillLoaded = false;
+
+  const skillLoading = document.getElementById('skill-loading');
+  const skillError = document.getElementById('skill-error');
+  const skillSetup = document.getElementById('skill-setup');
+  const skillEmpty = document.getElementById('skill-empty');
+  const skillTableWrap = document.getElementById('skill-table-wrap');
+  const skillTableBody = document.getElementById('skill-table-body');
+  const topbarHeading = document.getElementById('topbar-heading');
+
+  function formatPhone(raw) {
+    const d = String(raw || '').replace(/\D/g, '');
+    if (d.length === 11) return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+    if (d.length === 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+    return raw || '—';
+  }
+
+  function pct(part, total) {
+    if (!total) return 0;
+    return Math.round((part / total) * 100);
+  }
+
+  function renderSkillFunnel(stats, leads) {
+    const visits = Number(stats?.visits ?? 0);
+    const popups = Number(stats?.popup_opens ?? 0);
+    const downloads = Number(stats?.downloads ?? 0);
+    const captured = leads.length;
+    const base = Math.max(visits, popups, captured, downloads, 1);
+
+    document.getElementById('fn-visits').textContent = visits;
+    document.getElementById('fn-popup').textContent = popups;
+    document.getElementById('fn-leads').textContent = captured;
+    document.getElementById('fn-downloads').textContent = downloads;
+
+    document.getElementById('fn-popup-rate').textContent = `${pct(popups, visits)}% de quem visitou`;
+    document.getElementById('fn-leads-rate').textContent = `${pct(captured, popups)}% de quem abriu`;
+    document.getElementById('fn-conv').textContent = `Conversão total ${pct(downloads, visits)}%`;
+
+    document.getElementById('bar-visits').style.width = `${pct(visits, base)}%`;
+    document.getElementById('bar-popup').style.width = `${pct(popups, base)}%`;
+    document.getElementById('bar-leads').style.width = `${pct(captured, base)}%`;
+    document.getElementById('bar-downloads').style.width = `${pct(downloads, base)}%`;
+  }
+
+  function renderSkillLeads(leads) {
+    skillLoading.classList.remove('visible');
+    if (currentView === 'skill') countPill.textContent = leads.length;
+
+    if (!leads.length) {
+      skillEmpty.classList.add('visible');
+      skillTableWrap.classList.remove('visible');
+      return;
+    }
+
+    skillEmpty.classList.remove('visible');
+    skillTableBody.innerHTML = leads.map(lead => {
+      const utm = [lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ') || '—';
+      const local = [lead.geo_city, lead.geo_country].filter(Boolean).join(', ') || '—';
+      const testTag = isTestLead(lead) ? '<span class="tag-test">Teste</span>' : '';
+      return `
+        <tr>
+          <td class="mono">${escapeHtml(formatDate(lead.created_at))}</td>
+          <td class="mono">${escapeHtml(formatTime(lead.created_at))}</td>
+          <td class="name">${escapeHtml(lead.name)}${testTag}</td>
+          <td class="email">${escapeHtml(lead.email)}</td>
+          <td class="mono">${escapeHtml(formatPhone(lead.whatsapp))}</td>
+          <td>${escapeHtml(detectDevice(lead.user_agent))}</td>
+          <td>${escapeHtml(local)}</td>
+          <td>${escapeHtml(lead.referrer || 'direto')}</td>
+          <td>${escapeHtml(utm)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    skillTableWrap.classList.add('visible');
+  }
+
+  async function fetchSkillData(passwordHash) {
+    skillLoading.classList.add('visible');
+    skillError.classList.remove('visible');
+    skillSetup.classList.remove('visible');
+    skillEmpty.classList.remove('visible');
+    skillTableWrap.classList.remove('visible');
+
+    try {
+      const res = await fetch(SKILL_FUNCTIONS_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': ANON_KEY,
+          'Authorization': `Bearer ${ANON_KEY}`
+        },
+        body: JSON.stringify({ password_hash: passwordHash })
+      });
+
+      // function ainda nao publicada: mostra o passo a passo em vez de um erro seco
+      if (res.status === 404) throw new Error('not_deployed');
+      if (!res.ok) throw new Error('request_failed');
+
+      const data = await res.json();
+      skillLeads = (data.leads || []).filter(lead => !lead.is_duplicate);
+      skillStats = data.stats || null;
+      skillLoaded = true;
+
+      skillLoading.classList.remove('visible');
+      renderSkillFunnel(skillStats, skillLeads);
+      renderSkillLeads(skillLeads);
+    } catch (err) {
+      skillLoading.classList.remove('visible');
+      renderSkillFunnel(null, []);
+      if (err.message === 'not_deployed') {
+        skillSetup.classList.add('visible');
+      } else {
+        skillError.textContent = 'Não foi possível carregar os dados da landing agora. Tente novamente em instantes.';
+        skillError.classList.add('visible');
+      }
+    }
+  }
+
+  function exportSkillCsv() {
+    if (!skillLeads.length) return;
+    const headers = ['created_at', 'name', 'email', 'whatsapp', 'geo_city', 'geo_country', 'referrer', 'utm_source', 'utm_medium', 'utm_campaign'];
+    const rows = skillLeads.map(lead =>
+      headers.map(h => `"${String(lead[h] ?? '').replace(/"/g, '""')}"`).join(',')
+    );
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `leads-landing-skill-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function switchView(view) {
+    currentView = view;
+
+    document.querySelectorAll('.section-tab').forEach(tab => {
+      tab.setAttribute('aria-selected', String(tab.dataset.view === view));
+    });
+    document.getElementById('view-leads').hidden = view !== 'leads';
+    document.getElementById('view-skill').hidden = view !== 'skill';
+
+    if (view === 'skill') {
+      topbarHeading.textContent = 'Landing Page Skill';
+      countPill.textContent = skillLeads.length;
+      if (!skillLoaded && currentPasswordHash) fetchSkillData(currentPasswordHash);
+    } else {
+      topbarHeading.textContent = 'Leads · CS Day 2026';
+      countPill.textContent = currentLeads.length;
+    }
+  }
+
+  document.querySelectorAll('.section-tab').forEach(tab => {
+    tab.addEventListener('click', () => switchView(tab.dataset.view));
+  });
+</script>
+</body>
+</html>
