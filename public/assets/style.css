@@ -96,7 +96,7 @@ em{font-style:normal; color:var(--cyan)}
 /* ---------- vídeo ---------- */
 .video-frame{
   position:relative;
-  padding-top:56.25%;
+  aspect-ratio:16/9;
   border-radius:var(--r-card);
   overflow:hidden;
   border:1px solid var(--line);
@@ -105,6 +105,14 @@ em{font-style:normal; color:var(--cyan)}
 }
 .video-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
 
+/* no desktop o vídeo sangra para fora da coluna de texto, sem alargar o resto */
+@media (min-width:900px){
+  .video-frame{width:820px; margin-left:calc((820px - 100%) / -2)}
+}
+@media (min-width:1120px){
+  .video-frame{width:960px; margin-left:calc((960px - 100%) / -2)}
+}
+
 /* capa clicável: só carrega o YouTube depois do clique */
 .video-facade{
   position:absolute; inset:0;
@@ -112,7 +120,22 @@ em{font-style:normal; color:var(--cyan)}
   display:block; padding:0; border:0;
   background:#000; cursor:pointer; overflow:hidden;
 }
-.facade-thumb{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block}
+/* três frames do vídeo alternando em crossfade antes do play.
+   object-fit:cover corta exatamente as tarjas pretas do frame 4:3 do YouTube. */
+.facade-thumb{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; display:block;
+  opacity:0;
+  animation:facade-cycle 10.5s var(--ease) infinite;
+}
+.facade-thumb:nth-of-type(1){animation-delay:0s}
+.facade-thumb:nth-of-type(2){animation-delay:3.5s}
+.facade-thumb:nth-of-type(3){animation-delay:7s}
+@keyframes facade-cycle{
+  0%{opacity:0}
+  6%,30%{opacity:1}
+  36%,100%{opacity:0}
+}
 .facade-scrim{
   position:absolute; inset:0;
   background:
@@ -370,4 +393,6 @@ pre code{background:none; border:0; padding:0}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important; transition-duration:.01ms !important}
+  .facade-thumb{animation:none !important; opacity:0}
+  .facade-thumb:nth-of-type(1){opacity:1}
 }
