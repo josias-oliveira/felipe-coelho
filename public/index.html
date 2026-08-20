@@ -1,12 +1,1074 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Felipe Coelho</title>
-<meta http-equiv="refresh" content="0; url=/habilidade/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Foi muito bom ter você no CS Day 2026</title>
+  <meta name="description" content="Baixe os slides da palestra de Felipe Coelho no CS Day 2026">
+  <meta name="theme-color" content="#121212">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://felipe-coelho.vercel.app/">
+  <meta property="og:title" content="Foi muito bom ter você no CS Day 2026">
+  <meta property="og:description" content="Baixe os slides da palestra de Felipe Coelho no CS Day 2026.">
+  <meta property="og:image" content="https://cdn.jsdelivr.net/gh/josias-oliveira/felipe-coelho@main/public/assets/1785876720679.jpeg">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+<style>
+  :root {
+    --ink: #121212;
+    --blue: #1a0ce0;
+    --blue-deep: #0d049e;
+    --cyan: #55eef2;
+    --text: #f4f5f7;
+    --muted: #b6bac2;
+
+    --font-display: "Archivo Black", "Arial Black", "Helvetica Neue", Impact, sans-serif;
+    --font-body: "Baloo 2", "Quicksand", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: url("https://cdn.jsdelivr.net/gh/josias-oliveira/felipe-coelho@main/public/assets/1785876720679.jpeg");
+    background-size: cover;
+    background-position: 62% center;
+  }
+  .bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(100deg, rgba(10,10,11,0.96) 0%, rgba(10,10,11,0.90) 42%, rgba(10,10,11,0.62) 100%),
+      rgba(10,10,11,0.28);
+  }
+
+  .screen {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 72px 32px 96px;
+  }
+
+  .block {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .step {
+    animation: rise 520ms cubic-bezier(0.16, 0.84, 0.44, 1) both;
+  }
+  .step[hidden] { display: none; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .fade-1 { animation-delay: 60ms; }
+  .fade-2 { animation-delay: 150ms; }
+  .fade-3 { animation-delay: 250ms; }
+  .fade-4 { animation-delay: 350ms; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue-deep);
+    background: var(--cyan);
+    padding: 7px 14px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: rise 520ms cubic-bezier(0.16,0.84,0.44,1) both;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: clamp(36px, 7vw, 68px);
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    margin: 0 0 26px;
+    max-width: 15ch;
+    text-wrap: balance;
+    animation: rise 520ms cubic-bezier(0.16,0.84,0.44,1) both;
+    animation-delay: 60ms;
+  }
+  h1 .accent { color: var(--cyan); }
+
+  .greeting {
+    font-size: clamp(17px, 2.2vw, 21px);
+    color: var(--text);
+    margin: 0 0 52px;
+    max-width: 44ch;
+    animation: rise 520ms cubic-bezier(0.16,0.84,0.44,1) both;
+    animation-delay: 150ms;
+  }
+  .greeting strong { color: var(--cyan); font-weight: 700; }
+
+  .question {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 30px;
+  }
+  .q-index {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--cyan);
+    padding-top: 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex: none;
+  }
+  .q-index svg { width: 11px; height: 11px; }
+  .question h2 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(22px, 3.4vw, 33px);
+    line-height: 1.25;
+    margin: 0;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 340px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 56px;
+    padding: 0 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.28);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 160ms ease-out, border-color 160ms ease-out, transform 110ms ease-out;
+  }
+  .option:hover {
+    background: rgba(85,238,242,0.13);
+    border-color: var(--cyan);
+  }
+  .option:focus-visible {
+    outline: 3px solid var(--cyan);
+    outline-offset: 3px;
+  }
+  .option:active { transform: scale(0.985); }
+
+  .key {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .option:hover .key {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .hint {
+    margin: 22px 0 0;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .answer h2 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: clamp(28px, 5vw, 46px);
+    line-height: 1.02;
+    margin: 0 0 18px;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .answer p {
+    font-size: clamp(16px, 2vw, 19px);
+    color: var(--muted);
+    margin: 0 0 32px;
+    max-width: 44ch;
+  }
+  .answer .check {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 24px;
+  }
+
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 54px;
+    padding: 0 30px;
+    border-radius: 10px;
+    background: var(--cyan);
+    color: #06232b;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 160ms ease-out, transform 110ms ease-out;
+  }
+  .link-btn:hover { background: #7bf3f6; }
+  .link-btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  .link-btn:active { transform: scale(0.985); }
+  .link-btn svg { width: 17px; height: 17px; }
+
+  .restart {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 26px;
+    background: none;
+    border: none;
+    padding: 6px 0;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+  }
+  .restart:hover { color: var(--cyan); border-color: var(--cyan); }
+  .restart:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+
+  .action-row {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    row-gap: 28px;
+    flex-wrap: wrap;
+    margin-top: 44px;
+  }
+  .action-row .restart { margin-top: 0; }
+
+  .social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 340px;
+    margin: 0 0 30px;
+  }
+
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 56px;
+    padding: 0 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.28);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: background-color 160ms ease-out, border-color 160ms ease-out, transform 110ms ease-out;
+  }
+  .social-btn:hover { background: rgba(85,238,242,0.13); border-color: var(--cyan); }
+  .social-btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  .social-btn:active { transform: scale(0.985); }
+
+  .social-btn svg {
+    flex: none;
+    width: 22px;
+    height: 22px;
+  }
+
+  .social-btn .ext {
+    margin-left: auto;
+    width: 15px;
+    height: 15px;
+    opacity: 0.6;
+    flex: none;
+  }
+
+  .confirm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 54px;
+    padding: 0 28px;
+    border-radius: 10px;
+    background: var(--cyan);
+    color: #06232b;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 14.5px;
+    letter-spacing: 0.02em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 160ms ease-out, transform 110ms ease-out;
+  }
+  .confirm-btn:hover { background: #7bf3f6; }
+  .confirm-btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  .confirm-btn:active { transform: scale(0.985); }
+  .confirm-btn svg { width: 17px; height: 17px; }
+
+  .field-form {
+    max-width: 460px;
+    margin-left: 34px;
+  }
+
+  .field-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255,255,255,0.32);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(20px, 3vw, 26px);
+    padding: 10px 2px 14px;
+    outline: none;
+    transition: border-color 160ms ease-out;
+  }
+  .field-input::placeholder { color: rgba(255,255,255,0.35); font-weight: 500; }
+  .field-input:focus { border-color: var(--cyan); }
+  .field-input:invalid:not(:placeholder-shown) { border-color: #f2715c; }
+
+  .field-error {
+    margin: 10px 2px 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: #f2715c;
+    min-height: 16px;
+  }
+
+  .field-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 30px;
+  }
+
+  .ok-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 30px;
+    border-radius: 10px;
+    background: var(--cyan);
+    color: #06232b;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 14.5px;
+    letter-spacing: 0.02em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 160ms ease-out, transform 110ms ease-out, opacity 160ms ease-out;
+  }
+  .ok-btn:hover { background: #7bf3f6; }
+  .ok-btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  .ok-btn:active { transform: scale(0.985); }
+  .ok-btn svg { width: 16px; height: 16px; }
+  .ok-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+  .ok-btn .btn-spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(6,35,43,0.35);
+    border-top-color: #06232b;
+    animation: btn-spin 700ms linear infinite;
+  }
+  .ok-btn.is-loading .btn-icon { display: none; }
+  .ok-btn.is-loading .btn-spinner { display: inline-block; }
+  @keyframes btn-spin { to { transform: rotate(360deg); } }
+
+  .field-hint {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .field-hint kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 4px;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+  }
+
+  .field-note {
+    margin: 16px 0 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 40ch;
+  }
+  .field-note strong { color: var(--text); }
+  .field-note .nowrap { white-space: nowrap; }
+
+  @media (max-width: 460px) {
+    .field-note .nowrap { white-space: normal; }
+  }
+
+  .brand {
+    position: fixed;
+    z-index: 2;
+    left: 32px;
+    bottom: 26px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .handle {
+    position: fixed;
+    z-index: 2;
+    right: 32px;
+    bottom: 26px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .handle:hover { color: var(--cyan); }
+
+  .back-btn {
+    position: fixed;
+    z-index: 2;
+    left: 32px;
+    bottom: 58px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .back-btn svg { width: 12px; height: 12px; }
+  .back-btn:hover { color: var(--cyan); }
+  .back-btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+  .back-btn[hidden] { display: none; }
+
+  #confetti-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  @media (max-width: 640px) {
+    /* respeita notch e barra de gestos do iPhone (viewport-fit=cover) */
+    .screen {
+      align-items: center;
+      padding:
+        calc(72px + env(safe-area-inset-top))
+        calc(20px + env(safe-area-inset-right))
+        calc(96px + env(safe-area-inset-bottom))
+        calc(20px + env(safe-area-inset-left));
+    }
+    .brand  { left:  calc(20px + env(safe-area-inset-left));  bottom: calc(20px + env(safe-area-inset-bottom)); }
+    .handle { right: calc(20px + env(safe-area-inset-right)); bottom: calc(20px + env(safe-area-inset-bottom)); }
+    .back-btn { left: calc(20px + env(safe-area-inset-left)); bottom: calc(52px + env(safe-area-inset-bottom)); }
+
+    .bg { background-position: 68% center; }
+
+    /* nada de recuos assimétricos no celular: tudo ocupa a largura útil */
+    .options { margin-left: 0; max-width: none; width: 100%; }
+    .question { gap: 8px; margin-bottom: 24px; }
+    .field-form { margin-left: 0; max-width: none; width: 100%; }
+
+    /* comandos de teclado não fazem sentido em touchscreen */
+    .hint, .field-hint, .key { display: none; }
+
+    /* toques maiores e mais fáceis de acertar */
+    .option { min-height: 60px; padding: 0 20px; font-size: 17px; }
+    .key { width: 30px; height: 30px; }
+    .ok-btn, .confirm-btn, .link-btn, .social-btn { min-height: 58px; }
+    .field-actions { flex-wrap: wrap; row-gap: 12px; }
+    .action-row { margin-top: 36px; }
+
+    .brand, .handle { font-size: 10px; }
+    .back-btn { font-size: 10px; }
+  }
+
+  @media (max-width: 640px) and (max-height: 700px) {
+    .screen { padding-top: 64px; padding-bottom: 84px; }
+    .greeting { margin-bottom: 32px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, .step, h1, .greeting, .eyebrow {
+      animation: none !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
 </head>
 <body>
-Redirecionando para <a href="/habilidade/">habilidade</a>...
+<div class="bg" role="img" aria-label="Felipe Coelho no palco do CS Day 2026, apresentando o slide sobre preparação e repertório."></div>
+
+<canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+<main class="screen">
+  <div class="block">
+
+    <!-- Passo 1: pergunta -->
+    <div class="step" id="step-ask">
+      <span class="eyebrow">CS Day 2026</span>
+
+      <h1>Foi muito bom ter <span class="accent">você</span> no CS Day 2026</h1>
+
+      <p class="greeting">Olá, meu nome é <strong>Felipe Coelho</strong>, fico muito feliz com a sua presença no evento.</p>
+
+      <div class="question fade-3">
+        <h2 id="q-label">Você gostaria de baixar os slides da palestra?</h2>
+      </div>
+
+      <div class="options fade-4" role="group" aria-labelledby="q-label">
+        <button class="option" type="button" data-answer="yes">
+          <span class="key" aria-hidden="true">S</span>
+          <span>Sim</span>
+        </button>
+        <button class="option" type="button" data-answer="no">
+          <span class="key" aria-hidden="true">N</span>
+          <span>Não</span>
+        </button>
+      </div>
+
+      <p class="hint fade-4">Ou pressione <strong>S</strong> / <strong>N</strong> no teclado</p>
+    </div>
+
+    <!-- Passo 2: sim -->
+    <div class="step answer" id="step-yes" hidden>
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="#55eef2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <h2>Os slides são seus</h2>
+      <p>Obrigado por estar no CS Day 2026. Clique abaixo para baixar o deck completo da palestra.</p>
+      <a class="link-btn" id="dl-link" href="/download/Felipe-Coelho-CS%20Academy-2026.pdf" download="Felipe-Coelho-CS-Academy-2026.pdf" target="_blank" rel="noopener">
+        Baixar os slides
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+      <div class="action-row">
+        <button class="restart" type="button" data-restart>Voltar ao início</button>
+      </div>
+    </div>
+
+    <!-- Passo 4: não -->
+    <div class="step answer" id="step-no" hidden>
+      <svg class="check" viewBox="0 0 24 24" fill="none" stroke="#b6bac2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      <h2 id="no-title">Sem problema</h2>
+      <p id="no-sub">Obrigado por estar no CS Day 2026. Se mudar de ideia, é só voltar aqui — ou me chamar no @fcoelhogtm.</p>
+      <div class="action-row">
+        <button class="restart" type="button" data-restart>Voltar ao início</button>
+      </div>
+    </div>
+
+    <!-- Passo 2: seguir redes sociais -->
+    <div class="step" id="step-follow" hidden>
+      <span class="eyebrow">Pergunta 4 de 4</span>
+
+      <h1 style="font-size: clamp(28px, 5vw, 46px); max-width: 18ch;">Me segue no Instagram e no meu canal no YouTube</h1>
+
+      <p class="greeting" style="margin-bottom: 36px;">Não leva nem 1 minuto e você continua acompanhando meu trabalho.</p>
+
+      <div class="social-buttons">
+        <a class="social-btn" href="https://www.instagram.com/fcoelhogtm/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <span>Instagram</span>
+          <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+        <a class="social-btn" href="https://www.youtube.com/@coelho.felipe" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+          </svg>
+          <span>YouTube</span>
+          <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+
+      <div class="action-row">
+        <button class="confirm-btn" type="button" id="follow-confirm">
+          Já me inscrevi e estou seguindo você
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Passo 3.1: nome -->
+    <div class="step" id="step-name" hidden>
+      <span class="eyebrow">Pergunta 1 de 4</span>
+
+      <div class="question fade-2">
+        <span class="q-index" aria-hidden="true">
+          1
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </span>
+        <h2 id="q-name-label">Qual seu nome?</h2>
+      </div>
+
+      <form class="field-form fade-3" id="form-name" novalidate>
+        <input class="field-input" id="input-name" type="text" name="name"
+               placeholder="Digite sua resposta aqui..." autocomplete="name"
+               aria-labelledby="q-name-label" required>
+        <p class="field-error" id="error-name" role="alert"></p>
+        <div class="field-actions">
+          <button class="ok-btn" type="submit">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="btn-spinner" aria-hidden="true"></span>
+            OK
+          </button>
+          <span class="field-hint">pressione <kbd>Enter</kbd> ↵</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Passo 3.2: email -->
+    <div class="step" id="step-email" hidden>
+      <span class="eyebrow">Pergunta 2 de 4</span>
+
+      <div class="question fade-2">
+        <span class="q-index" aria-hidden="true">
+          2
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </span>
+        <h2 id="q-email-label">Qual seu email profissional?</h2>
+      </div>
+
+      <form class="field-form fade-3" id="form-email" novalidate>
+        <input class="field-input" id="input-email" type="email" name="email"
+               placeholder="voce@empresa.com" autocomplete="email"
+               aria-labelledby="q-email-label" required>
+        <p class="field-error" id="error-email" role="alert"></p>
+        <div class="field-actions">
+          <button class="ok-btn" type="submit">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="btn-spinner" aria-hidden="true"></span>
+            OK
+          </button>
+          <span class="field-hint">pressione <kbd>Enter</kbd> ↵</span>
+        </div>
+        <p class="field-note"><span class="nowrap">Importante: coloque um email que você tenha acesso fácil,</span><br>irei enviar os slides pra esta caixa.</p>
+      </form>
+    </div>
+
+    <!-- Passo 3.3: empresa -->
+    <div class="step" id="step-company" hidden>
+      <span class="eyebrow">Pergunta 3 de 4</span>
+
+      <div class="question fade-2">
+        <span class="q-index" aria-hidden="true">
+          3
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </span>
+        <h2 id="q-company-label">Qual o nome da sua empresa?</h2>
+      </div>
+
+      <form class="field-form fade-3" id="form-company" novalidate>
+        <input class="field-input" id="input-company" type="text" name="company"
+               placeholder="Digite sua resposta aqui..." autocomplete="organization"
+               aria-labelledby="q-company-label" required>
+        <p class="field-error" id="error-company" role="alert"></p>
+        <div class="field-actions">
+          <button class="ok-btn" type="submit">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span class="btn-spinner" aria-hidden="true"></span>
+            OK
+          </button>
+          <span class="field-hint">pressione <kbd>Enter</kbd> ↵</span>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<span class="brand">Customer Day · by CS Academy</span>
+<a class="handle" href="https://instagram.com/fcoelhogtm" target="_blank" rel="noopener">@fcoelhogtm</a>
+
+<button class="back-btn" id="back-btn" type="button" hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <line x1="19" y1="12" x2="5" y2="12"></line>
+    <polyline points="12 19 5 12 12 5"></polyline>
+  </svg>
+  Voltar
+</button>
+
+<script>
+  const steps = {
+    ask:     document.getElementById('step-ask'),
+    yes:     document.getElementById('step-yes'),
+    no:      document.getElementById('step-no'),
+    follow:  document.getElementById('step-follow'),
+    name:    document.getElementById('step-name'),
+    email:   document.getElementById('step-email'),
+    company: document.getElementById('step-company')
+  };
+
+  let current = 'ask';
+  let wantsDownload = null;
+  const lead = { name: '', email: '', company: '' };
+
+  const prevStep = {
+    name: 'ask',
+    email: 'name',
+    company: 'email',
+    follow: 'company'
+  };
+
+  const backBtn = document.getElementById('back-btn');
+
+  const confettiCanvas = document.getElementById('confetti-canvas');
+  const confettiCtx = confettiCanvas.getContext('2d');
+  const confettiColors = ['#55eef2', '#1a0ce0', '#ffffff', '#7bf3f6'];
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let confettiParticles = [];
+  let confettiFrame = null;
+
+  function resizeConfettiCanvas() {
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeConfettiCanvas);
+  resizeConfettiCanvas();
+
+  function fireConfetti() {
+    if (prefersReducedMotion) return;
+
+    const originX = confettiCanvas.width / 2;
+    const originY = confettiCanvas.height / 2;
+    const count = 160;
+    const gravity = 0.16;
+
+    confettiParticles = Array.from({ length: count }, () => {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 6 + Math.random() * 13;
+      return {
+        x: originX,
+        y: originY,
+        w: 6 + Math.random() * 6,
+        h: 8 + Math.random() * 10,
+        color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        rotation: Math.random() * 360,
+        spin: (Math.random() - 0.5) * 14,
+        drag: 0.985
+      };
+    });
+
+    const start = performance.now();
+    const duration = 4200;
+
+    if (confettiFrame) cancelAnimationFrame(confettiFrame);
+
+    function step(now) {
+      const elapsed = now - start;
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+      confettiParticles.forEach(p => {
+        p.vx *= p.drag;
+        p.vy = p.vy * p.drag + gravity;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rotation += p.spin;
+
+        confettiCtx.save();
+        confettiCtx.translate(p.x, p.y);
+        confettiCtx.rotate((p.rotation * Math.PI) / 180);
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        confettiCtx.restore();
+      });
+
+      if (elapsed < duration) {
+        confettiFrame = requestAnimationFrame(step);
+      } else {
+        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        confettiParticles = [];
+      }
+    }
+
+    confettiFrame = requestAnimationFrame(step);
+  }
+
+  function show(name) {
+    current = name;
+    Object.entries(steps).forEach(([key, el]) => {
+      el.hidden = key !== name;
+    });
+    const active = steps[name];
+    active.style.animation = 'none';
+    void active.offsetWidth;
+    active.style.animation = '';
+
+    const focusTarget = active.querySelector('input, button, a');
+    if (focusTarget) focusTarget.focus({ preventScroll: true });
+
+    backBtn.hidden = !prevStep[name];
+
+    if (name === 'yes') fireConfetti();
+  }
+
+  backBtn.addEventListener('click', () => {
+    const target = prevStep[current];
+    if (target) show(target);
+  });
+
+  const noJokes = [
+    { title: 'Objeção registrada', sub: 'Em vendas isso aqui é só o início da conversa, não o fim dela.' },
+    { title: 'Churn detectado', sub: 'Calma, isso não entra no seu NRR. Ainda dá tempo de reverter.' },
+    { title: 'Non-renewal iminente', sub: 'Todo CS sabe: "não" às vezes é só um "ainda não" com sotaque forte.' },
+    { title: 'Nota de risco: vermelha', sub: 'Se isso fosse uma conta, eu já estaria agendando uma call de recuperação.' },
+    { title: 'Meta do mês não bateu', sub: 'Mas relaxa, o botão "Sim" continua ali, disponível pra expansão.' },
+    { title: 'Downsell confirmado', sub: 'Um dia você entende o valor. É questão de onboarding.' },
+    { title: 'QBR vai ser difícil explicar isso', sub: 'Só espero que ninguém pergunte "por que o cliente não converteu?".' },
+    { title: 'Ticket de suporte aberto', sub: 'Assunto: "Cliente se recusa a evoluir." Prioridade: alta.' },
+    { title: 'Playbook de retenção ativado', sub: 'Passo 1: respirar. Passo 2: deixar o botão Sim bem visível pra próxima vez.' },
+    { title: 'Health Score caiu um pouco', sub: 'Nada que um "Sim" não resolva na próxima visita.' },
+    { title: 'Follow-up agendado', sub: 'Vou anotar aqui: "cliente promissor, ainda não fechou".' },
+    { title: 'Isso não é rejeição, é feedback', sub: 'E todo bom time de CS adora um feedback pra iterar.' },
+    { title: 'Forecast ajustado', sub: 'Tirei você do "certo" e coloquei no "upside". Ainda acredito em você.' },
+    { title: 'Cross-sell adiado', sub: 'Tudo bem, nem todo mundo tá pronto pra upgrade de vida no primeiro contato.' },
+    { title: 'CSAT levemente abalado', sub: 'Mas o relacionamento continua. É isso que separa CS de venda única.' },
+    { title: 'BANT incompleto', sub: 'Budget eu não sei, mas Timing definitivamente não é agora.' },
+    { title: 'Sem Champion identificado', sub: 'Vou precisar achar alguém aí dentro de você que acredite nessa causa.' },
+    { title: 'Isso foi um trial close', sub: 'E você reprovou. Mas trial close serve exatamente pra isso: testar o terreno.' },
+    { title: 'MEDDIC incompleto', sub: 'Métricas, Economic Buyer e Decision Process ainda em branco. Vamos completar aos poucos.' },
+    { title: 'Challenger Sale ativado', sub: 'Vou te ensinar algo novo sobre o seu próprio problema até você mudar de ideia.' },
+    { title: 'Gatekeeper na linha', sub: 'E olha que nem tinha secretária eletrônica no meio, foi você mesmo.' },
+    { title: 'SPIN Selling, fase "Necessidade"', sub: 'Ainda não encontrei a dor certa. Mas ela existe, eu sei que existe.' },
+    { title: 'Sem Economic Buyer no chat', sub: 'Isso explica muita coisa. Vamos subir um nível na cadeia de decisão.' },
+    { title: 'Mutual Action Plan rejeitado', sub: 'Sem problema, eu reescrevo o plano sozinho e te mostro depois.' },
+    { title: 'Fechamento assumptivo, versão 1, falhou', sub: 'Vou reagendar mentalmente pra próxima call como se nada tivesse acontecido.' },
+    { title: 'Land and Expand: só não plantou a semente', sub: 'Sem base instalada não tem expansão. Mas o solo tá fértil.' },
+    { title: 'Prova social ignorada', sub: 'Mesmo eu tendo citado três clientes parecidos com você. Paciência é uma técnica também.' },
+    { title: 'Urgência não criada', sub: 'Confesso que esqueci de mencionar a oferta por tempo limitado. Da próxima eu crio.' },
+    { title: 'Handling de objeção nível iniciante', sub: 'Reconheço, valido, mas ainda não reverto. Trabalhando nisso.' },
+    { title: 'ROI não comprovado a tempo', sub: 'O business case ainda tá no rascunho. Volto com números da próxima vez.' }
+  ];
+
+  function pickNoJoke() {
+    const joke = noJokes[Math.floor(Math.random() * noJokes.length)];
+    document.getElementById('no-title').textContent = joke.title;
+    document.getElementById('no-sub').textContent = joke.sub;
+  }
+
+  document.querySelectorAll('.option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wantsDownload = btn.dataset.answer === 'yes';
+      if (wantsDownload) {
+        show('name');
+      } else {
+        pickNoJoke();
+        show('no');
+      }
+    });
+  });
+
+  document.getElementById('follow-confirm').addEventListener('click', () => {
+    showResult();
+  });
+
+  function showResult() {
+    show(wantsDownload ? 'yes' : 'no');
+  }
+
+  function wireField(formId, inputId, errorId, key, onNext, invalidMessage) {
+    const form = document.getElementById(formId);
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+    const submitBtn = form.querySelector('.ok-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (submitBtn.disabled) return;
+
+      const value = input.value.trim();
+      if (!value || !input.checkValidity()) {
+        error.textContent = invalidMessage;
+        input.focus();
+        return;
+      }
+      error.textContent = '';
+      lead[key] = value;
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('is-loading');
+      try {
+        await onNext();
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('is-loading');
+      }
+    });
+
+    input.addEventListener('input', () => {
+      if (error.textContent) error.textContent = '';
+    });
+  }
+
+  wireField('form-name', 'input-name', 'error-name', 'name', () => show('email'),
+    'Digite seu nome para continuar.');
+  wireField('form-email', 'input-email', 'error-email', 'email', () => show('company'),
+    'Digite um email válido para continuar.');
+
+  function submitLead() {
+    const params = new URLSearchParams(window.location.search);
+    const payload = {
+      name: lead.name,
+      email: lead.email,
+      company: lead.company,
+      language: navigator.language || null,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
+      screen_resolution: `${window.screen.width}x${window.screen.height}`,
+      referrer: document.referrer || null,
+      utm_source: params.get('utm_source'),
+      utm_medium: params.get('utm_medium'),
+      utm_campaign: params.get('utm_campaign')
+    };
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
+
+    return fetch('https://nwmuaiilbxtjkwfxpkay.supabase.co/functions/v1/submit-lead', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bXVhaWlsYnh0amt3Znhwa2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMTMxNDMsImV4cCI6MjEwMTY4OTE0M30.gXVAeCnF1TGVmHPO65Sd1UTV0Z8W25uoaAR1DNYSzaE',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bXVhaWlsYnh0amt3Znhwa2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMTMxNDMsImV4cCI6MjEwMTY4OTE0M30.gXVAeCnF1TGVmHPO65Sd1UTV0Z8W25uoaAR1DNYSzaE'
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    }).catch(() => {}).finally(() => clearTimeout(timeout));
+  }
+
+  wireField('form-company', 'input-company', 'error-company', 'company', async () => {
+    await submitLead();
+    show('follow');
+  }, 'Digite sua empresa para continuar.');
+
+  document.querySelectorAll('[data-restart]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wantsDownload = null;
+      show('ask');
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (current !== 'ask') return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key.toLowerCase();
+    if (k === 's') { e.preventDefault(); wantsDownload = true; show('name'); }
+    if (k === 'n') { e.preventDefault(); wantsDownload = false; pickNoJoke(); show('no'); }
+  });
+</script>
 </body>
 </html>
