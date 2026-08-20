@@ -1,0 +1,372 @@
+/* Tokens do design system CS Day 2026 — felipe-coelho.vercel.app/design-system */
+:root{
+  --ink:#121212;
+  --ink-2:#1A1A1C;
+  --ink-3:#202024;
+  --blue:#1A0CE0;
+  --blue-deep:#0D049E;
+  --cyan:#55EEF2;
+  --cyan-hover:#7BF3F6;
+  --text:#F4F5F7;
+  --muted:#A9ADB6;
+  --line:#2C2D31;
+  --danger:#F2715C;
+
+  --r-badge:5px;
+  --r-tag:8px;
+  --r-field:10px;
+  --r-card:14px;
+
+  --ease:cubic-bezier(.16,.84,.44,1);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--text);
+  font-family:"Baloo 2","Quicksand",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-weight:600;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- fundo: gradiente minimalista sobre o ink ---------- */
+.bg{
+  position:fixed; inset:0; z-index:-2;
+  background:
+    radial-gradient(circle at 16% 10%, rgba(85,238,242,.10), transparent 52%),
+    radial-gradient(circle at 84% 82%, rgba(26,12,224,.20), transparent 58%),
+    var(--ink);
+}
+.bg-veil{
+  position:fixed; inset:0; z-index:-1;
+  background:linear-gradient(180deg, rgba(18,18,18,0) 0%, rgba(18,18,18,.55) 100%);
+}
+
+.wrap{
+  max-width:720px;
+  margin:0 auto;
+  padding:56px 24px 72px;
+  padding-left:max(24px, env(safe-area-inset-left));
+  padding-right:max(24px, env(safe-area-inset-right));
+  padding-bottom:max(72px, env(safe-area-inset-bottom));
+  animation:rise 520ms var(--ease) both;
+}
+@keyframes rise{from{opacity:0; transform:translateY(14px)}to{opacity:1; transform:none}}
+
+/* ---------- tipografia ---------- */
+h1,h2,h3,.display,.cta,.tab{
+  font-family:"Archivo Black","Poppins",Impact,sans-serif;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:-.01em;
+}
+h1{font-size:clamp(36px,7vw,68px); line-height:1.02; margin:0 0 18px}
+h2{font-size:clamp(28px,4.6vw,46px); line-height:1.06; margin:0 0 14px}
+h3{font-size:24px; line-height:1.15; margin:0 0 8px}
+em{font-style:normal; color:var(--cyan)}
+
+.mono,.kicker,.cta-note,.err,.privacy,.foot,.hint{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+.kicker{
+  display:inline-block;
+  background:var(--cyan);
+  color:var(--blue-deep);
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  border-radius:var(--r-tag);
+  padding:6px 12px;
+  margin-bottom:24px;
+  font-weight:700;
+}
+.sub{
+  font-size:clamp(17px,2.4vw,21px);
+  line-height:1.6;
+  color:var(--text);
+  margin:0 0 44px;
+  max-width:56ch;
+}
+.muted{color:var(--muted)}
+
+/* ---------- vídeo ---------- */
+.video-frame{
+  position:relative;
+  padding-top:56.25%;
+  border-radius:var(--r-card);
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:#000;
+  box-shadow:0 0 0 1px rgba(85,238,242,.22), 0 18px 48px rgba(0,0,0,.5);
+}
+.video-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+
+/* capa clicável: só carrega o YouTube depois do clique */
+.video-facade{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  display:block; padding:0; border:0;
+  background:#000; cursor:pointer; overflow:hidden;
+}
+.facade-thumb{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block}
+.facade-scrim{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at center, rgba(10,10,11,.55) 0%, rgba(10,10,11,.28) 70%),
+    rgba(10,10,11,.42);
+  transition:opacity 160ms ease-out;
+}
+.video-facade:hover .facade-scrim{opacity:.75}
+
+.facade-center{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
+}
+.play-circle{
+  position:relative;
+  width:84px; height:84px; border-radius:50%;
+  background:var(--cyan);
+  display:flex; align-items:center; justify-content:center;
+  transition:transform 160ms ease-out, background 160ms ease-out;
+}
+.play-circle svg{width:36px; height:36px; fill:#06232B; margin-left:5px}
+/* anel pulsando ao redor do play */
+.play-circle::after{
+  content:''; position:absolute; inset:0;
+  border-radius:50%; border:2px solid var(--cyan);
+  animation:play-pulse 1.9s var(--ease) infinite;
+}
+@keyframes play-pulse{
+  0%{transform:scale(1); opacity:.7}
+  70%,100%{transform:scale(1.5); opacity:0}
+}
+.video-facade:hover .play-circle{transform:scale(1.06); background:var(--cyan-hover)}
+.video-facade:active .play-circle{transform:scale(.98)}
+
+.facade-label{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:14px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--text);
+  text-shadow:0 2px 14px rgba(0,0,0,.7);
+}
+
+.yt-note{margin:16px 0 0; font-size:14px; color:var(--muted)}
+.yt-note a{color:var(--cyan); text-decoration:none; border-bottom:1px solid rgba(85,238,242,.4)}
+.yt-note a:hover{color:var(--cyan-hover)}
+
+/* bloco de texto que vem depois do vídeo */
+.intro{display:block; margin-top:52px}
+
+/* ---------- chamada ---------- */
+.pitch{margin-top:56px}
+
+/* marca oficial do Claude */
+.claude-logo{
+  display:block;
+  width:72px; height:72px;
+  margin:0 0 18px;
+}
+.pitch p{font-size:17px; line-height:1.6; margin:0 0 18px; max-width:60ch}
+.hl{
+  background:var(--cyan);
+  color:var(--blue-deep);
+  border-radius:var(--r-badge);
+  padding:1px 6px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.bullets{list-style:none; padding:0; margin:30px 0 0; display:grid; gap:12px}
+.bullets li{
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
+  border-radius:var(--r-field);
+  padding:14px 18px;
+  font-size:16px;
+  color:var(--text);
+}
+.bullets b{color:var(--cyan); font-weight:700}
+
+/* ---------- botões ---------- */
+.cta-box{
+  margin-top:44px;
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  text-align:center;
+}
+
+/* anotação manuscrita apontando para o CTA */
+.cta-annotation{
+  align-self:center;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  margin:0;
+  color:var(--cyan);
+  pointer-events:none;
+}
+/* seta apontando para baixo em direção ao CTA */
+.cta-arrow{width:54px; height:42px; flex:none; transform:scaleX(-1)}
+.cta-hand{
+  font-family:"Caveat","Bradley Hand","Segoe Script",cursive;
+  font-size:31px; font-weight:700; line-height:1.1;
+  transform:rotate(-3deg);
+  white-space:nowrap;
+}
+.cta{
+  appearance:none; border:0; cursor:pointer;
+  display:inline-block; text-decoration:none;
+  font-size:15px;
+  background:var(--cyan);
+  color:#06232B;
+  border-radius:var(--r-field);
+  padding:18px 30px;
+  min-height:58px;
+  transition:background 160ms ease-out, transform 110ms ease-out;
+}
+.cta:hover{background:var(--cyan-hover)}
+.cta:active{transform:scale(.985)}
+.cta[disabled]{opacity:.45; cursor:progress; transform:none}
+.cta.ghost{
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--line);
+}
+.cta.ghost:hover{border-color:var(--cyan); background:rgba(85,238,242,.06)}
+:focus-visible{outline:3px solid var(--cyan); outline-offset:3px}
+
+.cta-note{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+
+.foot{
+  margin-top:72px; padding-top:24px;
+  border-top:1px solid var(--line);
+  font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+}
+.foot a{
+  display:inline-flex; align-items:center; min-height:44px;
+  color:var(--muted); text-decoration:none;
+}
+.foot a:hover{color:var(--cyan)}
+
+/* ---------- modal ---------- */
+.overlay{
+  position:fixed; inset:0; z-index:50;
+  background:rgba(10,10,11,.9);
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:24px;
+  /* modal mais alto que a tela precisa rolar, não ser cortado */
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+.overlay[hidden]{display:none}
+.modal{
+  position:relative;
+  margin:auto 0;
+  width:100%; max-width:460px;
+  background:var(--ink-2);
+  border:1px solid var(--line);
+  border-radius:var(--r-card);
+  padding:32px 28px 26px;
+  animation:rise 520ms var(--ease) both;
+}
+.modal h3{margin:0 0 6px}
+.modal-sub{margin:0 0 18px; color:var(--muted); font-size:15px}
+.close{
+  position:absolute; top:6px; right:8px;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  background:none; border:0; color:var(--muted);
+  font-size:26px; line-height:1; cursor:pointer; padding:0;
+}
+.close:hover{color:var(--cyan)}
+
+label{
+  display:block;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted);
+  margin:16px 0 6px;
+}
+input{
+  width:100%;
+  background:transparent;
+  border:1px solid var(--line);
+  border-radius:var(--r-field);
+  color:var(--text);
+  font-family:inherit; font-weight:600; font-size:16px;
+  padding:15px 14px;
+  min-height:58px;
+  outline:none;
+  transition:border-color 160ms ease-out;
+}
+input::placeholder{color:#6E727B}
+input:focus{border-color:var(--cyan)}
+input.invalid{border-color:var(--danger)}
+.err{display:block; min-height:16px; color:var(--danger); font-size:12px; margin-top:6px}
+.submit{width:100%; margin-top:20px; text-align:center}
+.privacy{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); text-align:center; margin:14px 0 0}
+
+/* ---------- página de download ---------- */
+.card{
+  background:var(--ink-2);
+  border:1px solid var(--line);
+  border-radius:var(--r-card);
+  padding:30px 26px;
+  margin-top:24px;
+}
+.card h2{font-size:clamp(22px,3vw,28px)}
+.steps{margin:0; padding-left:20px}
+.steps li{margin:14px 0; font-size:16px}
+.hint{display:block; font-size:12px; color:var(--muted); margin-top:6px}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:13px;
+  background:var(--ink-3);
+  border:1px solid var(--line);
+  border-radius:var(--r-badge);
+  padding:2px 6px;
+  color:var(--cyan);
+}
+pre{
+  background:var(--ink-3);
+  border:1px solid var(--line);
+  border-radius:var(--r-field);
+  padding:14px 16px;
+  overflow-x:auto;
+  margin:10px 0 0;
+}
+pre code{background:none; border:0; padding:0}
+
+.tabs{display:flex; gap:8px; margin:0 0 20px; flex-wrap:wrap}
+.tab{
+  display:inline-flex; align-items:center;
+  min-height:44px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
+  color:var(--text);
+  border-radius:var(--r-tag);
+  padding:12px 18px;
+  font-size:13px;
+  cursor:pointer;
+  transition:background 160ms ease-out, color 160ms ease-out;
+}
+.tab[aria-selected="true"]{background:var(--cyan); color:var(--blue-deep); border-color:var(--cyan)}
+
+@media (max-width:640px){
+  .wrap{padding-top:36px}
+  .pitch{margin-top:40px}
+  .cta{width:100%; text-align:center; min-height:60px}
+  .cta-box{align-items:stretch}
+  .cta-annotation{margin-right:28px}
+  .cta-hand{font-size:26px}
+  .cta-arrow{width:46px; height:36px; margin-top:14px}
+  .play-circle{width:68px; height:68px}
+  .play-circle svg{width:29px; height:29px}
+  .facade-center{gap:16px}
+  .facade-label{font-size:12px; letter-spacing:.14em}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important; transition-duration:.01ms !important}
+}
