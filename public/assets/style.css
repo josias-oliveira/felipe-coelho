@@ -207,7 +207,7 @@ em{font-style:normal; color:var(--cyan)}
   pointer-events:none;
 }
 /* seta apontando para baixo em direção ao CTA */
-.cta-arrow{width:54px; height:42px; flex:none; transform:scaleX(-1)}
+.cta-arrow{width:36px; height:72px; flex:none}
 .cta-hand{
   font-family:"Caveat","Bradley Hand","Segoe Script",cursive;
   font-size:31px; font-weight:700; line-height:1.1;
@@ -360,7 +360,7 @@ pre code{background:none; border:0; padding:0}
   .cta-box{align-items:stretch}
   .cta-annotation{margin-right:28px}
   .cta-hand{font-size:26px}
-  .cta-arrow{width:46px; height:36px; margin-top:14px}
+  .cta-arrow{width:33px; height:66px; margin-top:2px}
   .play-circle{width:68px; height:68px}
   .play-circle svg{width:29px; height:29px}
   .facade-center{gap:16px}

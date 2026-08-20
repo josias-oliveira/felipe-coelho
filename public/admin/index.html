@@ -705,12 +705,11 @@
     <div class="state-msg error" id="skill-error"></div>
 
     <div class="setup-note" id="skill-setup">
-      <h3>Captura ainda não conectada</h3>
-      <p>A landing da skill já coleta nome, e-mail e WhatsApp, mas os dados ainda ficam só no navegador de quem preenche. Para alimentar esta seção falta ligar o backend:</p>
+      <h3>Backend fora do ar</h3>
+      <p>A function <code>admin-skill-leads</code> não respondeu. A captura está ligada, então isso costuma ser temporário. Se persistir, confira no Supabase:</p>
       <ol>
-        <li>Criar a tabela <code>skill_leads</code> e a tabela de eventos <code>skill_events</code> no Supabase.</li>
-        <li>Publicar a function <code>admin-skill-leads</code>, no mesmo padrão de <code>admin-leads</code>.</li>
-        <li>Fazer a landing enviar o lead e os eventos de funil (visita, popup, download).</li>
+        <li>As tabelas <code>skill_leads</code> e <code>skill_events</code> existem.</li>
+        <li>As functions <code>submit-skill-lead</code>, <code>track-skill-event</code> e <code>admin-skill-leads</code> estão ativas.</li>
       </ol>
     </div>
 

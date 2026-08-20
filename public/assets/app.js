@@ -1,9 +1,63 @@
 (function () {
+  // --- integracao com o backend (Supabase) ---
+  var SUPABASE_URL = 'https://nwmuaiilbxtjkwfxpkay.supabase.co/functions/v1/';
+  var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bXVhaWlsYnh0amt3Znhwa2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMTMxNDMsImV4cCI6MjEwMTY4OTE0M30.gXVAeCnF1TGVmHPO65Sd1UTV0Z8W25uoaAR1DNYSzaE';
+
+  function sessionId() {
+    var key = 'skill_sid';
+    try {
+      var id = localStorage.getItem(key);
+      if (!id) {
+        id = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+        localStorage.setItem(key, id);
+      }
+      return id;
+    } catch (e) {
+      return 'anon-' + Math.random().toString(36).slice(2, 10);
+    }
+  }
+
+  function utms() {
+    var p = new URLSearchParams(window.location.search);
+    return {
+      referrer: document.referrer || null,
+      utm_source: p.get('utm_source'),
+      utm_medium: p.get('utm_medium'),
+      utm_campaign: p.get('utm_campaign')
+    };
+  }
+
+  function post(path, payload) {
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 6000);
+    return fetch(SUPABASE_URL + path, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': ANON_KEY,
+        'Authorization': 'Bearer ' + ANON_KEY
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    }).catch(function () {}).finally(function () { clearTimeout(timeout); });
+  }
+
+  // exposto para a pagina de download registrar o clique no .zip
+  window.trackSkillEvent = function (event) {
+    var payload = utms();
+    payload.event = event;
+    payload.session_id = sessionId();
+    return post('track-skill-event', payload);
+  };
+
   var overlay = document.getElementById('overlay');
   var form = document.getElementById('form');
   var submit = document.getElementById('submit');
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
+
+  // funil: visita na pagina
+  window.trackSkillEvent('visit');
 
   // capa do video: troca pelo iframe do YouTube so no clique
   var facade = document.getElementById('video-play');
@@ -26,6 +80,7 @@
   var lastFocus = null;
 
   function open() {
+    window.trackSkillEvent('popup_open');
     lastFocus = document.activeElement;
     overlay.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -142,7 +197,21 @@
         }));
       } catch (err) {}
 
-      window.location.href = 'download.html';
+      var payload = utms();
+      payload.name = nome;
+      payload.email = email;
+      payload.whatsapp = tel;
+      payload.session_id = sessionId();
+      payload.language = navigator.language || null;
+      payload.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || null;
+      payload.screen_resolution = window.screen.width + 'x' + window.screen.height;
+
+      submit.disabled = true;
+      submit.textContent = 'Liberando...';
+
+      post('submit-skill-lead', payload).then(function () {
+        window.location.href = 'download.html';
+      });
     });
   });
 })();

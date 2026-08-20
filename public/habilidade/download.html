@@ -22,7 +22,7 @@
   <p class="sub">Baixe o arquivo e siga os passos abaixo. Leva menos de um minuto.</p>
 
   <div class="cta-box">
-    <a class="cta" href="../download/pitch-prospeccao.zip" download>Baixar pitch-prospeccao.zip</a>
+    <a class="cta" id="zip-link" href="../download/pitch-prospeccao.zip" download>Baixar pitch-prospeccao.zip</a>
     <span class="cta-note">.zip · 35 KB · SKILL.md + 4 referências</span>
   </div>
 
@@ -82,6 +82,41 @@ mv ~/Downloads/pitch-prospeccao ~/.claude/skills/</code></pre>
 
 <script>
   (function () {
+    // funil: registra o clique no .zip (uma vez por sessao, deduplicado no backend)
+    var SUPABASE_URL = 'https://nwmuaiilbxtjkwfxpkay.supabase.co/functions/v1/track-skill-event';
+    var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bXVhaWlsYnh0amt3Znhwa2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMTMxNDMsImV4cCI6MjEwMTY4OTE0M30.gXVAeCnF1TGVmHPO65Sd1UTV0Z8W25uoaAR1DNYSzaE';
+
+    var zip = document.getElementById('zip-link');
+    if (zip) {
+      zip.addEventListener('click', function () {
+        var sid;
+        try { sid = localStorage.getItem('skill_sid'); } catch (e) {}
+        if (!sid) sid = 'anon-' + Math.random().toString(36).slice(2, 10);
+
+        var params = new URLSearchParams(window.location.search);
+        var payload = JSON.stringify({
+          event: 'download',
+          session_id: sid,
+          referrer: document.referrer || null,
+          utm_source: params.get('utm_source'),
+          utm_medium: params.get('utm_medium'),
+          utm_campaign: params.get('utm_campaign')
+        });
+
+        // keepalive: o registro sobrevive ao inicio do download
+        fetch(SUPABASE_URL, {
+          method: 'POST',
+          keepalive: true,
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': ANON_KEY,
+            'Authorization': 'Bearer ' + ANON_KEY
+          },
+          body: payload
+        }).catch(function () {});
+      });
+    }
+
     try {
       var lead = JSON.parse(sessionStorage.getItem('lead') || 'null');
       if (lead && lead.nome) {
