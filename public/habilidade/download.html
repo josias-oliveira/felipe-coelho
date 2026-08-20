@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A habilidade é sua · pitch-prospeccao</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Baloo+2:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="bg-veil"></div>
+
+<main class="wrap">
+
+  <span class="kicker">Download liberado</span>
+  <h1 id="hello">A habilidade é sua</h1>
+  <p class="sub">Baixe o arquivo e siga os passos abaixo. Leva menos de um minuto.</p>
+
+  <div class="cta-box">
+    <a class="cta" href="../download/pitch-prospeccao.zip" download>Baixar pitch-prospeccao.zip</a>
+    <span class="cta-note">.zip · 35 KB · SKILL.md + 4 referências</span>
+  </div>
+
+  <p class="yt-note">
+    Já se inscreveu no
+    <a href="https://www.youtube.com/@coelho.felipe" target="_blank" rel="noopener">meu canal no YouTube</a>?
+  </p>
+
+  <section class="card">
+    <h2>Como instalar</h2>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="p-code" data-panel="p-code">Claude Code</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p-web" data-panel="p-web">Claude web / app</button>
+    </div>
+
+    <div id="p-code" class="panel" role="tabpanel">
+      <ol class="steps">
+        <li>Descompacte o arquivo. Você fica com a pasta <code>pitch-prospeccao/</code>.</li>
+        <li>
+          Mova a pasta para o diretório de skills:
+          <pre><code>mkdir -p ~/.claude/skills
+mv ~/Downloads/pitch-prospeccao ~/.claude/skills/</code></pre>
+          <span class="hint">Para usar só em um projeto, coloque em <code>.claude/skills/</code> dentro dele.</span>
+        </li>
+        <li>Abra uma nova sessão do Claude Code.</li>
+        <li>Confira com <code>/skills</code>. O <code>pitch-prospeccao</code> aparece na lista.</li>
+        <li>Peça: “monte um pitch para o diretor comercial da empresa X”. A habilidade entra sozinha.</li>
+      </ol>
+    </div>
+
+    <div id="p-web" class="panel" role="tabpanel" hidden>
+      <ol class="steps">
+        <li>Abra <b>Configurações → Capacidades → Skills</b>.</li>
+        <li>Clique em <b>Upload skill</b> e selecione o <code>pitch-prospeccao.zip</code>, sem descompactar.</li>
+        <li>Ative a habilidade na lista.</li>
+        <li>Em qualquer conversa, descreva a empresa-alvo e o decisor, ou cole o pitch que quer auditar.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>O que vem dentro</h2>
+    <ul class="bullets">
+      <li><b>SKILL.md</b>: o método completo de pesquisa, gatilho, empacotamento e os dois modos.</li>
+      <li><b>pesquisa.md</b>: como levantar repertório real sobre o negócio do prospect.</li>
+      <li><b>biblioteca.md</b>: gatilhos por segmento e motor de crescimento.</li>
+      <li><b>canais.md</b>: a régua de call, e-mail, LinkedIn, WhatsApp e áudio.</li>
+      <li><b>auditoria.md</b>: a rubrica para pontuar e reescrever um pitch existente.</li>
+    </ul>
+  </section>
+
+  <footer class="foot">
+    <a href="index.html">← Voltar para a palestra</a>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    try {
+      var lead = JSON.parse(sessionStorage.getItem('lead') || 'null');
+      if (lead && lead.nome) {
+        document.getElementById('hello').textContent = lead.nome.split(' ')[0] + ', a habilidade é sua';
+      }
+    } catch (e) {}
+
+    var tabs = document.querySelectorAll('.tab');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) {
+          t.setAttribute('aria-selected', String(t === tab));
+          document.getElementById(t.dataset.panel).hidden = t !== tab;
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

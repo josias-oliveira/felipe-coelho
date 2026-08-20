@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A habilidade de pitch de prospecção · Felipe Coelho</title>
+<meta name="description" content="Assista ao vídeo e baixe a habilidade de pitch de prospecção: gatilho + empacotamento para vender a reunião, não a solução.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="bg-veil"></div>
+
+<main class="wrap">
+
+  <span class="kicker">Claude · Habilidade</span>
+
+  <section aria-label="Vídeo da palestra">
+    <div class="video-frame">
+      <button class="video-facade" id="video-play" type="button"
+              aria-label="Assistir ao vídeo: como criar um pitch de prospecção impossível de ignorar">
+        <img class="facade-thumb" src="https://i.ytimg.com/vi/Peiak6PvmRE/maxresdefault.jpg" alt=""
+             width="1280" height="720"
+             onerror="this.src='https://i.ytimg.com/vi/Peiak6PvmRE/hqdefault.jpg'">
+        <span class="facade-scrim"></span>
+        <span class="facade-center">
+          <span class="play-circle">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg>
+          </span>
+          <span class="facade-label">Clique para assistir</span>
+        </span>
+      </button>
+    </div>
+    <p class="yt-note">
+      Não esquece de se inscrever no
+      <a href="https://www.youtube.com/@coelho.felipe" target="_blank" rel="noopener">meu canal no YouTube</a>.
+    </p>
+  </section>
+
+  <header class="intro">
+    <h1>Seu pitch não perde na negociação. Ele perde nos <em>primeiros segundos</em>.</h1>
+    <p class="sub">
+      Assista o vídeo e leve com você a habilidade que coloca o método dentro do seu Claude,
+      pronta para gerar e auditar suas abordagens frias.
+    </p>
+  </header>
+
+  <section class="pitch" id="metodo">
+    <img class="claude-logo" src="../assets/claude-ai-logo-rounded-hd-free-png.webp"
+         alt="Claude" width="72" height="72" loading="lazy">
+    <h2>Pare de mandar mensagem que fala de você</h2>
+    <p>
+      Antes de decidir se continua lendo, o prospect responde uma pergunta só:
+      <strong>“o que eu ganho continuando essa conversa?”</strong>
+      A habilidade <span class="hl">pitch-prospeccao</span> aplica a estrutura
+      <strong>gatilho + empacotamento</strong> em cold call, cold e-mail, LinkedIn, WhatsApp e áudio.
+      O objetivo é sempre o mesmo: vender a reunião, não a solução.
+    </p>
+
+    <ul class="bullets">
+      <li><b>Modo gerar</b>: você descreve a empresa e o decisor, ela devolve o pitch com repertório de negócio.</li>
+      <li><b>Modo auditar</b>: você cola o pitch atual, ela aponta onde quebra e reescreve.</li>
+      <li><b>Canal por canal</b>: a régua certa para call, e-mail, LinkedIn, WhatsApp e áudio.</li>
+      <li><b>Biblioteca de gatilhos</b>: por segmento, motor de crescimento e ponto de vazamento de receita.</li>
+    </ul>
+
+    <div class="cta-box">
+      <span class="cta-annotation" aria-hidden="true">
+        <span class="cta-hand">Baixe pro seu Claude</span>
+        <svg class="cta-arrow" viewBox="0 0 90 70" fill="none">
+          <path d="M80 5 C 78 26, 70 42, 52 52 C 42 57, 32 58, 22 58"
+                stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+          <path d="M35.2 65 L 22 58 L 35.2 51"
+                stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <button class="cta" id="cta">Baixar a habilidade</button>
+      <span class="cta-note">.zip · 35 KB · instala em 1 minuto</span>
+    </div>
+  </section>
+
+  <footer class="foot">
+    Felipe Coelho · <span id="year"></span>
+  </footer>
+</main>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+  <div class="modal">
+    <button class="close" id="close" aria-label="Fechar">&times;</button>
+    <h3 id="modal-title">Quase lá</h3>
+    <p class="modal-sub">Não leva nem 1 minuto e o download libera na hora.</p>
+
+    <form id="form" novalidate>
+      <label for="nome">Nome</label>
+      <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como você se chama" aria-describedby="err-nome" required>
+      <small class="err" id="err-nome" data-for="nome" role="alert"></small>
+
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" aria-describedby="err-email" required>
+      <small class="err" id="err-email" data-for="email" role="alert"></small>
+
+      <label for="whats">WhatsApp</label>
+      <input id="whats" name="whats" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(11) 99999-9999" aria-describedby="err-whats" required>
+      <small class="err" id="err-whats" data-for="whats" role="alert"></small>
+
+      <button type="submit" class="cta submit" id="submit">Liberar download</button>
+      <p class="privacy">Seus dados ficam comigo. Sem spam.</p>
+    </form>
+  </div>
+</div>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>
