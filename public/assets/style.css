@@ -201,13 +201,14 @@ em{font-style:normal; color:var(--cyan)}
 /* anotação manuscrita apontando para o CTA */
 .cta-annotation{
   align-self:center;
+  margin-top:14px;
   display:flex; flex-direction:column; align-items:center; gap:8px;
   margin:0;
   color:var(--cyan);
   pointer-events:none;
 }
-/* seta apontando para baixo em direção ao CTA */
-.cta-arrow{width:36px; height:72px; flex:none}
+/* seta apontando para cima em direção ao CTA */
+.cta-arrow{width:54px; height:42px; flex:none; transform:scaleY(-1)}
 .cta-hand{
   font-family:"Caveat","Bradley Hand","Segoe Script",cursive;
   font-size:31px; font-weight:700; line-height:1.1;
@@ -358,9 +359,9 @@ pre code{background:none; border:0; padding:0}
   .pitch{margin-top:40px}
   .cta{width:100%; text-align:center; min-height:60px}
   .cta-box{align-items:stretch}
-  .cta-annotation{margin-right:28px}
-  .cta-hand{font-size:26px}
-  .cta-arrow{width:33px; height:66px; margin-top:2px}
+  .cta-annotation{margin-top:10px}
+  .cta-hand{font-size:22px}
+  .cta-arrow{width:46px; height:36px; margin-bottom:6px}
   .play-circle{width:68px; height:68px}
   .play-circle svg{width:29px; height:29px}
   .facade-center{gap:16px}
