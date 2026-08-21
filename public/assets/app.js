@@ -65,7 +65,7 @@
     facade.addEventListener('click', function () {
       var frame = facade.parentNode;
       var iframe = document.createElement('iframe');
-      iframe.src = 'https://www.youtube-nocookie.com/embed/Peiak6PvmRE?rel=0&autoplay=1';
+      iframe.src = 'https://www.youtube-nocookie.com/embed/Peiak6PvmRE?rel=0&autoplay=1&playsinline=1';
       iframe.title = 'Como criar um pitch de prospecção impossível de ignorar, por Felipe Coelho';
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
       iframe.referrerPolicy = 'strict-origin-when-cross-origin';
