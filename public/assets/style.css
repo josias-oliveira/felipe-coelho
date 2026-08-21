@@ -190,8 +190,9 @@ em{font-style:normal; color:var(--cyan)}
 /* marca oficial do Claude */
 .claude-logo{
   display:block;
+  align-self:center;
   width:72px; height:72px;
-  margin:0 0 18px;
+  margin:0 0 4px;
 }
 .pitch p{font-size:17px; line-height:1.6; margin:0 0 18px; max-width:60ch}
 .hl{
